@@ -1,5 +1,4 @@
 from fastapi import FastAPI
-import uvicorn
 
 
 app = FastAPI(
@@ -76,6 +75,3 @@ def test():
     """
 
     return {'body': 'Test Route Working'}
-
-
-# uvicorn.run(app)
