@@ -78,4 +78,4 @@ def test():
     return {'body': 'Test Route Working'}
 
 
-uvicorn.run(app)
+# uvicorn.run(app)
