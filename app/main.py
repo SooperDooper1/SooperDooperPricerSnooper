@@ -2,9 +2,6 @@ from fastapi import FastAPI, Request
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 import uvicorn
-import jinja2
-import mimetypes
-mimetypes.init()
 
 
 app = FastAPI(
@@ -49,5 +46,5 @@ def get_price():
 
     return suggested_price
 
-
+# Comment out the line below when deploying to Heroku
 # uvicorn.run(app)
