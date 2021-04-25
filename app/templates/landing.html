@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', path='sooper_style.css')}}" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <meta charset="UTF-8">
+    <title>Sooper Dooper Pricer Snooper</title>
+</head>
+<body>
+
+<h1>Sooper Dooper Pricer Snooper</h1>
+
+<p>
+    Welcome to our app. This app uses machine learning to suggest prices to hosts of AirBnB. It uses both micro
+    and macro data points to ascertain the price, which can change daily.
+</p>
+<div id="interface">
+    <div id="listing_input">
+        <label for="start_date">Start Date</label>
+        <label for="end_date">End Date</label>
+        <label for="zip_code">Zip Code</label>
+
+        <input id="start_date" type="text" placeholder="01/01/1901" />
+        <input id="end_date" type="text" placeholder="01/02/1901" />
+        <input id="zip_code" type="text" placeholder="00000" />
+
+        <button id="get_price">Get Price</button>
+
+    </div>
+    <div id="suggested_price">
+        Suggested Price: $<span id="price"></span>
+    </div>
+</div>
+
+
+<script src={{url_for('static', path='jquery.js')}}></script>
+</body>
+</html>
