@@ -1,53 +1,77 @@
-from fastapi import FastAPI, Request
-from fastapi.templating import Jinja2Templates
-from fastapi.staticfiles import StaticFiles
-import uvicorn
-import jinja2
-import mimetypes
-mimetypes.init()
+from fastapi import FastAPI
 
 
 app = FastAPI(
     title="SooperDooperPricerSnooper",
     docs_url="/docs"
 )
-app.mount('/static', StaticFiles(directory='static'), name='static')
-templates = Jinja2Templates(directory='templates')
 
 
 @app.get('/')
-def landing(request: Request):
+def landing():
     """
-    Defines processes to run upon arrival to landing page.
+    Defines processes to run upon arrival to landing/home/root/index page.
     This is where the app will collect info from the user
-    to send to the get_price route. The get price route
-    will format the data, send to the machine learning
-    algorithm, receive and format the result, and fincally
-    display that result next to the input form on the
-    landing page.
 
     :return: The landing page of the application
     """
 
-    template = "landing.html"
-    context = {"request": request}
-
-    return templates.TemplateResponse(template, context, media_type='text/html')
+    return 'Landing'
 
 
-@app.get('/get_price')
-def get_price():
+@app.get('/location')
+def landing():
     """
-    Defines processes to run for the get_price route. This route is specifically for getting
-    the suggested price from the machine learning algorithm.
+    Defines processes to run upon arrival to location page.
+    This is where the app will collect info from the user
 
-    :return: The suggested price
+    :return: The location page of the application
     """
 
-    #TODO Write function to get and return suggested listing price
-    suggested_price = 80
-
-    return suggested_price
+    return 'Location'
 
 
-uvicorn.run(app)
+@app.get('/time')
+def landing():
+    """
+    Defines processes to run upon arrival to time page.
+    This is where the app will collect info from the user
+
+    :return: The time page of the application
+    """
+
+    return 'Time'
+
+
+@app.get('/refresh')
+def landing():
+    """
+    Defines processes to run upon arrival to refresh page.
+    This is where the app will collect info from the user
+
+    :return: The refresh page of the application
+    """
+
+    return 'Refresh'
+
+
+@app.get('/display')
+def landing():
+    """
+    Defines processes to run upon arrival to display page.
+    This is where the app will collect info from the user
+
+    :return: The landing page of the application
+    """
+
+    return 'Display'
+
+
+@app.get('/test')
+def test():
+    """
+    Defines the docs route for frontend generation.
+    :return: Interface for front end generation
+    """
+
+    return {'body': 'Test Route Working'}
