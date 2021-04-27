@@ -10,7 +10,7 @@ app = FastAPI(
 )
 
 # Mount the static folder for access to css and javascript files
-app.mount('/static', StaticFiles(directory='static'), name='static')
+app.mount('/static', StaticFiles(directory='app/static'))
 
 # Create jinja object for accessing templates
 templates = Jinja2Templates(directory='templates')
@@ -48,7 +48,7 @@ def get_price():
     :return: The suggested price
     """
 
-    #TODO Write function to get and return suggested listing price
+    # TODO Write function to get and return suggested listing price
     suggested_price = 80
 
     return suggested_price
