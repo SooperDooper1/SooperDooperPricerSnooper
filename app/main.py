@@ -10,7 +10,7 @@ app = FastAPI(
 )
 
 # Mount the static folder for access to css and javascript files
-app.mount('/static', StaticFiles(directory='/static'), name='static')
+app.mount('/static', StaticFiles(directory='app/static'))
 
 # Create jinja object for accessing templates
 templates = Jinja2Templates(directory='templates')
