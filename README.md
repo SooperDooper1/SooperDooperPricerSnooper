@@ -1,2 +1,3 @@
 # SooperDooperPricerSnooper
-Air BnB Price prediction. Helps hosts set prices based on local market data.
+Air BnB Price prediction. Helps hosts set prices based on Seattle market data.
+

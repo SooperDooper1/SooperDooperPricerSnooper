@@ -53,7 +53,7 @@ def get_price():
     """
 
     # TODO Write function to get and return suggested listing price
-    suggested_price = 80
+    suggested_price = 10
 
     return suggested_price
 
