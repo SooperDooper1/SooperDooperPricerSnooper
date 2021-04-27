@@ -13,7 +13,7 @@ app = FastAPI(
 app.mount('/static', StaticFiles(directory='app/static'), name='static')
 
 # Create jinja object for accessing templates
-templates = Jinja2Templates(directory='templates')
+templates = Jinja2Templates(directory='app/templates')
 
 
 # Create endpoint for landing page where all information
