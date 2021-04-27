@@ -10,7 +10,7 @@ app = FastAPI(
 )
 
 # Mount the static folder for access to css and javascript files
-app.mount('/static', StaticFiles(directory='static'), name='static')
+app.mount('/static', StaticFiles(directory='app/static'), name='static')
 
 # Create jinja object for accessing templates
 templates = Jinja2Templates(directory='templates')
@@ -35,7 +35,8 @@ def landing(request: Request):
     template = "landing.html"
     context = {"request": request}
 
-    return templates.TemplateResponse(template, context, media_type='text/html')
+    return templates.TemplateResponse(template, context,
+                                      media_type='text/html')
 
 
 # Create endpoint for getting the suggested price
