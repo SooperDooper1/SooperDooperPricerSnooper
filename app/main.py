@@ -10,7 +10,9 @@ app = FastAPI(
 )
 
 # Mount the static folder for access to css and javascript files
-app.mount('/static', StaticFiles(directory='app/static'))
+# To get this to work properly on Heroku, the 'directory' argument
+# of 'StaticFiles' must be prepended with 'app/' to read as 'app/static'
+app.mount('/static', StaticFiles(directory='app/static'), name='static')
 
 # Create jinja object for accessing templates
 templates = Jinja2Templates(directory='templates')
@@ -52,6 +54,7 @@ def get_price():
     suggested_price = 80
 
     return suggested_price
+
 
 # Comment out the line below when deploying to Heroku
 # uvicorn.run(app)
