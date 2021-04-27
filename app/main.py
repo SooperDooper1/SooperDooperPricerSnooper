@@ -54,4 +54,4 @@ def get_price():
     return suggested_price
 
 # Comment out the line below when deploying to Heroku
-uvicorn.run(app)
+# uvicorn.run(app)
