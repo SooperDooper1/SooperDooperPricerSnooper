@@ -1,9 +1,11 @@
 from fastapi import FastAPI, Request
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
+import pandas as pd
 import uvicorn
 
-# Create App with titla and docs endpoint
+
+# Create App with title and docs endpoint
 app = FastAPI(
     title="SooperDooperPricerSnooper",
     docs_url="/docs"
@@ -13,10 +15,10 @@ app = FastAPI(
 # To get this to work properly on Heroku, the 'directory' argument
 # of 'StaticFiles' must be prepended with 'app/' to read as 'app/static'
 
-app.mount('/static', StaticFiles(directory='app/static'), name='static')
+app.mount('/static', StaticFiles(directory='static'), name='static')
 
 # Create jinja object for accessing templates
-templates = Jinja2Templates(directory='app/templates')
+templates = Jinja2Templates(directory='templates')
 
 
 # Create endpoint for landing page where all information
@@ -52,11 +54,12 @@ def get_price():
     :return: The suggested price
     """
 
-    # TODO Write function to get and return suggested listing price
-    suggested_price = 10
+    df = pd.read_csv('https://raw.githubusercontent.com/SooperDooper1/SooperDooperPricerSnooper/main/Data/calendar_cleaned.csv')
 
-    return suggested_price
+    suggested_price = df['price'].mean()
+
+    return round(suggested_price, 2)
 
 
 # Comment out the line below when deploying to Heroku
-# uvicorn.run(app)
+uvicorn.run(app)
