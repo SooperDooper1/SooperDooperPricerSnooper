@@ -46,19 +46,24 @@ def landing(request: Request):
 
 # Create endpoint for getting the suggested price
 @app.get('/get_price')
-def get_price():
+def get_price(date1, date2):
     """
-    Defines processes to run for the get_price route. This route is specifically for getting
-    the suggested price from the machine learning algorithm.
+    Defines processes to run for the get_price route. This route
+    is specifically for getting the suggested price from the
+    machine learning algorithm.
 
     :return: The suggested price
     """
 
-    df = pd.read_csv('https://raw.githubusercontent.com/SooperDooper1/SooperDooperPricerSnooper/main/Data/calendar_cleaned.csv')
+    df = pd.read_csv('https://raw.githubusercontent.com/'
+                     'SooperDooper1/SooperDooperPricerSnooper'
+                     '/main/Data/calendar_cleaned.csv')
 
-    suggested_price = df['price'].mean()
+    range_subset = df[(df['date'] >= date1) & (df['date'] <= date2)]
+    suggested_price = range_subset['price'].mean()
+    suggested_price = round(suggested_price, 2)
 
-    return round(suggested_price, 2)
+    return suggested_price
 
 
 # Comment out the line below when deploying to Heroku
