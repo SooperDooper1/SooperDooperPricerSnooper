@@ -45,7 +45,7 @@ def landing(request: Request):
 
 
 # Create endpoint for getting the suggested price
-@app.get('/get_price')
+@app.post('/get_price')
 def get_price(date1, date2):
     """
     Defines processes to run for the get_price route. This route
