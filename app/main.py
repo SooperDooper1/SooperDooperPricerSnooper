@@ -2,6 +2,7 @@ from fastapi import FastAPI, Request
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 import pandas as pd
+from datetime import date
 import uvicorn
 
 
@@ -45,8 +46,8 @@ def landing(request: Request):
 
 
 # Create endpoint for getting the suggested price
-@app.get('/get_price')
-def get_price(date1, date2):
+@app.post('/get_price/{date1}')
+def get_price(date1: date, date2: date):
     """
     Defines processes to run for the get_price route. This route
     is specifically for getting the suggested price from the
@@ -59,7 +60,10 @@ def get_price(date1, date2):
                      'SooperDooper1/SooperDooperPricerSnooper'
                      '/main/Data/calendar_cleaned.csv')
 
-    range_subset = df[(df['date'] >= date1) & (df['date'] <= date2)]
+    start_date = {"date1": date1}
+    end_date = {"date2": date2}
+
+    range_subset = df[(df['date'] >= start_date) & (df['date'] <= end_date)]
     suggested_price = range_subset['price'].mean()
     suggested_price = round(suggested_price, 2)
 
