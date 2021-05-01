@@ -4,6 +4,7 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel
 
+
 # Create App with title and docs endpoint
 app = FastAPI(
     title="SooperDooperPricerSnooper",
