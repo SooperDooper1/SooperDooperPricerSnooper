@@ -1,8 +1,5 @@
 $("#get_price").on('click', function(){
-<<<<<<< Updated upstream
-=======
     $("#captain_price").css('visibility', 'visible');
->>>>>>> Stashed changes
     $.ajax({
         url: '/get_price/',
         type: 'post',
