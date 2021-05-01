@@ -1,5 +1,4 @@
 $("#get_price").on('click', function(){
-    $('#suggested_price').css('visibility', 'visible').css(background(url:'captain_price.jpg'))
     $.ajax({
         url: '/get_price/',
         type: 'post',

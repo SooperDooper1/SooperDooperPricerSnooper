@@ -26,7 +26,7 @@ app.mount('/static', StaticFiles(directory='app/static'), name='static')
 templates = Jinja2Templates(directory='app/templates')
 
 
-class date_range(BaseModel):
+class DateRange(BaseModel):
     start_date: str
     end_date: str
 
@@ -56,7 +56,7 @@ def landing(request: Request):
 
 # Create endpoint for getting the suggested price
 @app.post("/get_price/")
-def get_price(date_range: date_range):
+def get_price(date_range: DateRange):
     """
     Defines processes to run for the get_price route. This route
     is specifically for getting the suggested price from the
@@ -64,7 +64,7 @@ def get_price(date_range: date_range):
 
     :return: The suggested price
     """
-    print(type(date_range))
+    # print(type(date_range))
 
     df = pd.read_csv('https://raw.githubusercontent.com/'
                     'SooperDooper1/SooperDooperPricerSnooper'
