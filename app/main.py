@@ -58,7 +58,6 @@ def get_price(date_range: DateRange):
 
     :return: The suggested price
     """
-    # print(type(date_range))
 
     df = pd.read_csv('https://raw.githubusercontent.com/'
                      'SooperDooper1/SooperDooperPricerSnooper'
