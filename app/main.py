@@ -1,14 +1,8 @@
-import requests
-from fastapi import FastAPI, Request
-from fastapi.templating import Jinja2Templates
-from fastapi.staticfiles import StaticFiles
-from pydantic import BaseModel
-from fastapi.encoders import jsonable_encoder
-from fastapi.responses import JSONResponse
 import pandas as pd
-from datetime import date
-import uvicorn
-
+from fastapi import FastAPI, Request
+from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
+from pydantic import BaseModel
 
 # Create App with title and docs endpoint
 app = FastAPI(
@@ -67,8 +61,8 @@ def get_price(date_range: DateRange):
     # print(type(date_range))
 
     df = pd.read_csv('https://raw.githubusercontent.com/'
-                    'SooperDooper1/SooperDooperPricerSnooper'
-                    '/main/Data/calendar_cleaned.csv')
+                     'SooperDooper1/SooperDooperPricerSnooper'
+                     '/main/Data/calendar_cleaned.csv')
 
     start_date = date_range.start_date.replace('2021', '2016')
     end_date = date_range.end_date.replace('2021', '2016')
@@ -81,10 +75,4 @@ def get_price(date_range: DateRange):
     suggested_price = range_subset['price'].mean()
     suggested_price = round(suggested_price, 2)
 
-    #json_return = jsonable_encoder(suggested_price)
-
     return str(suggested_price)
-
-
-# Comment out the line below when deploying to Heroku
-# uvicorn.run(app)
