@@ -20,10 +20,10 @@ app = FastAPI(
 # To get this to work properly on Heroku, the 'directory' argument
 # of 'StaticFiles' must be prepended with 'app/' to read as 'app/static'
 
-app.mount('/static', StaticFiles(directory='static'), name='static')
+app.mount('/static', StaticFiles(directory='app/static'), name='static')
 
 # Create jinja object for accessing templates
-templates = Jinja2Templates(directory='templates')
+templates = Jinja2Templates(directory='app/templates')
 
 
 class date_range(BaseModel):
@@ -87,4 +87,4 @@ def get_price(date_range: date_range):
 
 
 # Comment out the line below when deploying to Heroku
-uvicorn.run(app)
+# uvicorn.run(app)
