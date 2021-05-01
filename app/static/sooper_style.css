@@ -69,3 +69,7 @@ label [for=zip_code]{
     grid-column: 3/3;
     grid-row: 1/4;
 }
+
+#welcome_text{
+    font-size: 25px;
+}
