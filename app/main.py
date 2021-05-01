@@ -1,6 +1,10 @@
+import requests
 from fastapi import FastAPI, Request
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
+from pydantic import BaseModel
+from fastapi.encoders import jsonable_encoder
+from fastapi.responses import JSONResponse
 import pandas as pd
 from datetime import date
 import uvicorn
@@ -20,6 +24,11 @@ app.mount('/static', StaticFiles(directory='static'), name='static')
 
 # Create jinja object for accessing templates
 templates = Jinja2Templates(directory='templates')
+
+
+class date_range(BaseModel):
+    start_date: str
+    end_date: str
 
 
 # Create endpoint for landing page where all information
@@ -46,8 +55,8 @@ def landing(request: Request):
 
 
 # Create endpoint for getting the suggested price
-@app.post('/get_price/{date1}')
-def get_price(date1: date, date2: date):
+@app.post("/get_price/")
+def get_price(date_range: date_range):
     """
     Defines processes to run for the get_price route. This route
     is specifically for getting the suggested price from the
@@ -55,19 +64,26 @@ def get_price(date1: date, date2: date):
 
     :return: The suggested price
     """
+    print(type(date_range))
 
     df = pd.read_csv('https://raw.githubusercontent.com/'
-                     'SooperDooper1/SooperDooperPricerSnooper'
-                     '/main/Data/calendar_cleaned.csv')
+                    'SooperDooper1/SooperDooperPricerSnooper'
+                    '/main/Data/calendar_cleaned.csv')
 
-    start_date = {"date1": date1}
-    end_date = {"date2": date2}
+    start_date = date_range.start_date.replace('2021', '2016')
+    end_date = date_range.end_date.replace('2021', '2016')
+
+    start_date = pd.to_datetime(start_date, infer_datetime_format=True)
+    end_date = pd.to_datetime(end_date, infer_datetime_format=True)
+    df['date'] = pd.to_datetime(df['date'], infer_datetime_format=True)
 
     range_subset = df[(df['date'] >= start_date) & (df['date'] <= end_date)]
     suggested_price = range_subset['price'].mean()
     suggested_price = round(suggested_price, 2)
 
-    return suggested_price
+    #json_return = jsonable_encoder(suggested_price)
+
+    return str(suggested_price)
 
 
 # Comment out the line below when deploying to Heroku
