@@ -62,3 +62,10 @@ label [for=zip_code]{
     grid-row: 1/1;
     visibility: hidden;
 }
+
+#captain_price{
+    visibility: hidden;
+    max-width: 300px;
+    grid-column: 3/3;
+    grid-row: 1/4;
+}

@@ -1,4 +1,5 @@
 $("#get_price").on('click', function(){
+    $("#captain_price").css('visibility', 'visible');
     $.ajax({
         url: '/get_price/',
         type: 'post',
@@ -10,6 +11,7 @@ $("#get_price").on('click', function(){
             "end_date": $("#end_date").val(),
         }),
         success: function(response){
+            $("#captain_price").css('visibility', 'hidden');
             $('#price').text(response)
             $('#suggested_price').css('visibility', 'visible');
         }
