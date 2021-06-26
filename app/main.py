@@ -100,10 +100,6 @@ def get_price(date_range: DateRange):
                      input_shape=(X_train.shape[1],),
                      kernel_regularizer=regularizers.l1(l1=1e-5), activation='relu'))
     seq_model_2.add(Dense
-                    (64,
-                     kernel_regularizer=regularizers.l1(l1=1e-5),
-                     activation='relu'))
-    seq_model_2.add(Dense
                     (32,
                      kernel_regularizer=regularizers.l1(l1=1e-5),
                      activation='relu'))
