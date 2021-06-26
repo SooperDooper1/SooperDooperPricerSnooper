@@ -3,7 +3,6 @@ from fastapi import FastAPI, Request
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel
-from sklearn.model_selection import train_test_split
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense
 from tensorflow.keras import regularizers
@@ -64,32 +63,36 @@ def get_price(date_range: DateRange):
     :return: The suggested price
     """
 
-    df = pd.read_csv('https://raw.githubusercontent.com/SooperDooper1/'
-                     'SooperDooperPricerSnooper/main/Denver%20Data/'
-                     'no_text_subset.csv')
+    train = pd.read_csv('https://raw.githubusercontent.com'
+                        '/SooperDooper1/SooperDooperPricerSnooper'
+                        '/main/Denver%20Data/train.csv')
+
+    test = pd.read_csv('https://raw.githubusercontent.com'
+                       '/SooperDooper1/SooperDooperPricerSnooper/'
+                       'main/Denver%20Data/test.csv')
 
     start_date = date_range.start_date.replace('2021', '2008')
     end_date = date_range.end_date.replace('2021', '2019')
 
     start_date = pd.to_datetime(start_date, infer_datetime_format=True)
     end_date = pd.to_datetime(end_date, infer_datetime_format=True)
-    df['date'] = pd.to_datetime(df['date'], infer_datetime_format=True)
 
-    range_subset = df[(df['date'] >= start_date) & (df['date'] <= end_date)]
+    range_subset_train = train[(train['date'] >= start_date)
+                               & (train['date'] <= end_date)]
 
-    range_subset = range_subset.drop(columns='date')
+    range_subset_test = test[(test['date'] >= start_date)
+                               & (test['date'] <= end_date)]
 
-    train, test = train_test_split(range_subset,
-                                   train_size=0.80,
-                                   test_size=0.20,
-                                   random_state=42)
+    range_subset_train = range_subset_train.drop(columns='date')
+    range_subset_test = range_subset_test.drop(columns='date')
+
     target = 'price'
-    features = train.drop(columns=[target]).columns.tolist()
+    features = range_subset_train.drop(columns=[target]).columns.tolist()
 
-    X_train = train[features]
-    y_train = train[target]
-    X_test = test[features]
-    y_test = test[target]
+    X_train = range_subset_train[features]
+    y_train = range_subset_train[target]
+    X_test = range_subset_test[features]
+    y_test = range_subset_test[target]
 
     seq_model_2 = Sequential()
     seq_model_2.add(Dense
