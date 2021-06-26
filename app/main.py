@@ -105,10 +105,6 @@ def get_price(date_range: DateRange):
                      kernel_regularizer=regularizers.l1(l1=1e-5),
                      activation='relu'))
     seq_model_2.add(Dense
-                    (16,
-                     kernel_regularizer=regularizers.l1(l1=1e-5),
-                     activation='relu'))
-    seq_model_2.add(Dense
                     (1,
                      activation='linear'))
 
