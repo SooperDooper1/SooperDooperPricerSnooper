@@ -124,6 +124,8 @@ def get_price(date_range: DateRange):
 
     suggested_price = seq_model_2.predict(X_test)
 
+    suggested_price = suggested_price.mean()
+
     suggested_price = round(suggested_price, 2)
 
     return str(suggested_price)
