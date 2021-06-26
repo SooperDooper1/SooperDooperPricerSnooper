@@ -113,7 +113,7 @@ def get_price(date_range: DateRange):
 
     seq_model_2.fit(X_train,
                     y_train,
-                    epochs=100,
+                    epochs=50,
                     batch_size=64,
                     validation_data=(X_test, y_test))
 
