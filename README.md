@@ -1,8 +1,5 @@
 # Welcome to the Sooper Dooper Pricer Snooper
-This is a basic Air BnB Price prediction that Helps hosts set prices based on Seattle market data.
-
-We're currently using the archaic method of returning a mean to help hosts know what they should charge.
-We may have been able to create a more accurate model with a few more hands `¯\_(ツ)_/¯` 
+This is a basic Air BnB Price prediction that Helps hosts set prices based on Denver market data.
 
 Using the app is as simple as:
 1. Select the beginning date/end date for your predictions (smaller timeframes tend to be more accurate)
