@@ -7,7 +7,6 @@ from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense
 from tensorflow.keras import regularizers
 
-
 # Create App with title and docs endpoint
 app = FastAPI(
     title="SooperDooperPricerSnooper",
@@ -81,7 +80,7 @@ def get_price(date_range: DateRange):
                                & (train['date'] <= end_date)]
 
     range_subset_test = test[(test['date'] >= start_date)
-                               & (test['date'] <= end_date)]
+                             & (test['date'] <= end_date)]
 
     range_subset_train = range_subset_train.drop(columns='date')
     range_subset_test = range_subset_test.drop(columns='date')
