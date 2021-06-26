@@ -3,6 +3,10 @@ from fastapi import FastAPI, Request
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel
+from sklearn.model_selection import train_test_split
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense
+from tensorflow.keras import regularizers
 
 
 # Create App with title and docs endpoint
@@ -60,19 +64,66 @@ def get_price(date_range: DateRange):
     :return: The suggested price
     """
 
-    df = pd.read_csv('https://raw.githubusercontent.com/'
-                     'SooperDooper1/SooperDooperPricerSnooper'
-                     '/main/Data/calendar_cleaned.csv')
+    df = pd.read_csv('https://raw.githubusercontent.com/SooperDooper1/'
+                     'SooperDooperPricerSnooper/main/Denver%20Data/'
+                     'no_text_subset.csv')
 
-    start_date = date_range.start_date.replace('2021', '2016')
-    end_date = date_range.end_date.replace('2021', '2016')
+    start_date = date_range.start_date.replace('2021', '2008')
+    end_date = date_range.end_date.replace('2021', '2019')
 
     start_date = pd.to_datetime(start_date, infer_datetime_format=True)
     end_date = pd.to_datetime(end_date, infer_datetime_format=True)
     df['date'] = pd.to_datetime(df['date'], infer_datetime_format=True)
 
     range_subset = df[(df['date'] >= start_date) & (df['date'] <= end_date)]
-    suggested_price = range_subset['price'].mean()
+
+    range_subset = range_subset.drop(columns='date')
+
+    train, test = train_test_split(range_subset,
+                                   train_size=0.80,
+                                   test_size=0.20,
+                                   random_state=42)
+    target = 'price'
+    features = train.drop(columns=[target]).columns.tolist()
+
+    X_train = train[features]
+    y_train = train[target]
+    X_test = test[features]
+    y_test = test[target]
+
+    seq_model_2 = Sequential()
+    seq_model_2.add(Dense
+                    (128,
+                     input_shape=(X_train.shape[1],),
+                     kernel_regularizer=regularizers.l1(l1=1e-5), activation='relu'))
+    seq_model_2.add(Dense
+                    (64,
+                     kernel_regularizer=regularizers.l1(l1=1e-5),
+                     activation='relu'))
+    seq_model_2.add(Dense
+                    (32,
+                     kernel_regularizer=regularizers.l1(l1=1e-5),
+                     activation='relu'))
+    seq_model_2.add(Dense
+                    (16,
+                     kernel_regularizer=regularizers.l1(l1=1e-5),
+                     activation='relu'))
+    seq_model_2.add(Dense
+                    (1,
+                     activation='linear'))
+
+    seq_model_2.compile(loss='mean_absolute_error',
+                        optimizer='adam',
+                        metrics=['accuracy'])
+
+    seq_model_2.fit(X_train,
+                    y_train,
+                    epochs=100,
+                    batch_size=64,
+                    validation_data=(X_test, y_test))
+
+    suggested_price = seq_model_2.predict(X_test)
+
     suggested_price = round(suggested_price, 2)
 
     return str(suggested_price)
