@@ -3,9 +3,7 @@ from fastapi import FastAPI, Request
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense
-from tensorflow.keras import regularizers
+from tensorflow.keras.models import load_model
 
 # Create App with title and docs endpoint
 app = FastAPI(
@@ -62,13 +60,11 @@ def get_price(date_range: DateRange):
     :return: The suggested price
     """
 
-    train = pd.read_csv('https://raw.githubusercontent.com'
-                        '/SooperDooper1/SooperDooperPricerSnooper'
-                        '/main/Denver%20Data/train.csv')
+    df = pd.read_csv('https://raw.githubusercontent.com/'
+                     'SooperDooper1/SooperDooperPricerSnooper/'
+                     'main/Denver%20Data/nts_subset.csv')
 
-    test = pd.read_csv('https://raw.githubusercontent.com'
-                       '/SooperDooper1/SooperDooperPricerSnooper/'
-                       'main/Denver%20Data/test.csv')
+    df['date'] = pd.to_datetime(df['date'], infer_datetime_format=True)
 
     start_date = date_range.start_date.replace('2021', '2008')
     end_date = date_range.end_date.replace('2021', '2019')
@@ -76,47 +72,20 @@ def get_price(date_range: DateRange):
     start_date = pd.to_datetime(start_date, infer_datetime_format=True)
     end_date = pd.to_datetime(end_date, infer_datetime_format=True)
 
-    range_subset_train = train[(train['date'] >= start_date)
-                               & (train['date'] <= end_date)]
+    range_subset = df[(df['date'] >= start_date)
+                               & (df['date'] <= end_date)]
 
-    range_subset_test = test[(test['date'] >= start_date)
-                             & (test['date'] <= end_date)]
-
-    range_subset_train = range_subset_train.drop(columns='date')
-    range_subset_test = range_subset_test.drop(columns='date')
+    range_subset = range_subset.drop(columns='date')
 
     target = 'price'
-    features = range_subset_train.drop(columns=[target]).columns.tolist()
+    features = range_subset.drop(columns=[target]).columns.tolist()
 
-    X_train = range_subset_train[features]
-    y_train = range_subset_train[target]
-    X_test = range_subset_test[features]
-    y_test = range_subset_test[target]
+    X_test = range_subset[features]
+    y_test = range_subset[target]
 
-    seq_model_2 = Sequential()
-    seq_model_2.add(Dense
-                    (128,
-                     input_shape=(X_train.shape[1],),
-                     kernel_regularizer=regularizers.l1(l1=1e-5), activation='relu'))
-    seq_model_2.add(Dense
-                    (32,
-                     kernel_regularizer=regularizers.l1(l1=1e-5),
-                     activation='relu'))
-    seq_model_2.add(Dense
-                    (1,
-                     activation='linear'))
+    model = load_model("my_h5_model.h5")
 
-    seq_model_2.compile(loss='mean_absolute_error',
-                        optimizer='adam',
-                        metrics=['accuracy'])
-
-    seq_model_2.fit(X_train,
-                    y_train,
-                    epochs=50,
-                    batch_size=64,
-                    validation_data=(X_test, y_test))
-
-    suggested_price = seq_model_2.predict(X_test)
+    suggested_price = model.predict(X_test)
 
     suggested_price = suggested_price.mean()
 
