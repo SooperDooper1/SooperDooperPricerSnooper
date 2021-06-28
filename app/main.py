@@ -14,6 +14,8 @@ app = FastAPI(
 # Mount the static folder for access to css and javascript files
 # To get this to work properly on Heroku, the 'directory' argument
 # of 'StaticFiles' must be prepended with 'app/' to read as 'app/static'
+# when deployed and ./static locally. The same is true for the
+# same argument on the following line
 
 app.mount('/static', StaticFiles(directory='app/static'), name='static')
 
@@ -83,7 +85,7 @@ def get_price(date_range: DateRange):
     X_test = range_subset[features]
     y_test = range_subset[target]
 
-    model = load_model("/my_h5_model.h5")
+    model = load_model("./my_h5_model.h5")
 
     suggested_price = model.predict(X_test)
 
