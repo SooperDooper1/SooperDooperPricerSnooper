@@ -68,7 +68,7 @@ def get_price(date_range: DateRange):
 
     df['date'] = pd.to_datetime(df['date'], infer_datetime_format=True)
 
-    start_date = date_range.start_date.replace('2021', '2014')
+    start_date = date_range.start_date.replace('2021', '2016')
     end_date = date_range.end_date.replace('2021', '2019')
 
     start_date = pd.to_datetime(start_date, infer_datetime_format=True)
