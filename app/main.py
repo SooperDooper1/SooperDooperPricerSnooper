@@ -72,8 +72,8 @@ def get_price(date_range: DateRange):
     start_date = pd.to_datetime(start_date, infer_datetime_format=True)
     end_date = pd.to_datetime(end_date, infer_datetime_format=True)
 
-    range_subset = df[(df['date'] >= start_date)
-                               & (df['date'] <= end_date)]
+    range_subset = df[(df['date'] >= start_date) &
+                      (df['date'] <= end_date)]
 
     range_subset = range_subset.drop(columns='date')
 
@@ -83,7 +83,7 @@ def get_price(date_range: DateRange):
     X_test = range_subset[features]
     y_test = range_subset[target]
 
-    model = load_model("my_h5_model.h5")
+    model = load_model("/my_h5_model.h5")
 
     suggested_price = model.predict(X_test)
 
